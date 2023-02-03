@@ -47,7 +47,7 @@ export async function getStaticProps() {
     props: {
       results: res,
     },
-    revalidate: 600, // In seconds
+    revalidate: 86400, // In seconds
   };
 }
 export default function Home({ results }: any) {
