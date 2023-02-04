@@ -56,19 +56,11 @@ export default function Home({ results }: any) {
   });
   return (
     <>
-      <Head>
-        <title>Data Mine</title>
-        <meta name="description" content="data mine by Prifina" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <ChakraProvider>
-        <main>
-          <Center>
-            <Text>Hello</Text>
-          </Center>
-        </main>
-      </ChakraProvider>
+      <main>
+        <Center>
+          <Text>Hello</Text>
+        </Center>
+      </main>
     </>
   );
 }
