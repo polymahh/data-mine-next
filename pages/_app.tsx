@@ -8,7 +8,7 @@ import { DataProvider } from "@/context/DataContext";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
-      <DataProvider>
+      <DataProvider results={pageProps.results}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

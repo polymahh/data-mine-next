@@ -1,5 +1,51 @@
 import { createContext, useState } from "react";
 import { ReactNode } from "react";
+const { Client } = require("@notionhq/client");
+
+export async function getStaticProps() {
+  const notionSecret = process.env.NOTION_SECRET;
+  const notionDataSourcesId = process.env.NOTION_DATASOURCES_ID;
+  const notionDataConnectorsId = process.env.NOTION_DATACONNECTORS_ID;
+  const notionAttributesId = process.env.NOTION_ATTRIBUTES_ID;
+
+  if (
+    !notionSecret ||
+    !notionDataSourcesId ||
+    !notionDataConnectorsId ||
+    !notionAttributesId
+  ) {
+    throw Error(
+      "Must define NOTION_SECRET and NOTION_DATASOURCES_ID and NOTION_DATAATTRIBUTES_ID in env"
+    );
+  }
+
+  const notion = new Client({
+    auth: notionSecret,
+  });
+
+  let res = [];
+
+  let query = await notion.databases.query({
+    database_id: notionDataSourcesId,
+  });
+
+  res = [...query.results];
+
+  while (query.has_more) {
+    query = await notion.databases.query({
+      database_id: notionDataSourcesId,
+      start_cursor: query.next_cursor,
+    });
+    res = [...res, query.results];
+  }
+
+  return {
+    props: {
+      results: res,
+    },
+    revalidate: 86400, // In seconds
+  };
+}
 
 const initialCategories: any[] = [
   { name: "Appliances", items: [] },
@@ -20,10 +66,11 @@ const DataContext = createContext<any>({});
 
 interface Props {
   children?: ReactNode;
+  results?: any;
   // any props that come into the component
 }
 
-export function DataProvider({ children }: Props) {
+export function DataProvider({ children, results }: Props) {
   const [dataSources, setDataSources] = useState(null);
   const [categories, setCategories] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState<[string]>(["All"]);
