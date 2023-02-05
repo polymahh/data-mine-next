@@ -36,7 +36,7 @@ export async function getStaticProps() {
       database_id: notionDataSourcesId,
       start_cursor: query.next_cursor,
     });
-    res = [...res, query.results];
+    res = [...res, ...query.results].map((item) => item.properties);
   }
 
   return {
@@ -78,8 +78,11 @@ export function DataProvider({ children, results }: Props) {
   const [filter, setFilter] = useState("All");
   const [searchVal, setSearchVal] = useState("");
 
-  const handleDataSources = (data: any) => {
-    setDataSources(data);
+  const handleDataSources = () => {
+    if (dataSources === null) {
+      setDataSources(results);
+      console.log(dataSources);
+    } else console.log("data is here ", results);
   };
 
   const sortbyCategories =

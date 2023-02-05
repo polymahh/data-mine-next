@@ -1,3 +1,4 @@
+import CateoryCardList from "@/components/data-sources/CateoryCardList";
 import Hero from "@/components/data-sources/Hero";
 import DataWrapper from "@/components/layout/DataWrapper";
 import DataContext from "@/context/DataContext";
@@ -10,13 +11,14 @@ const DataSources = () => {
   const { handleDataSources, results } = useContext(DataContext);
 
   useEffect(() => {
-    console.log(results);
-    handleDataSources(results);
-  });
+    handleDataSources();
+  }, []);
   return (
     <VStack minH={"100vh"} bg={"bgLight"} spacing={0}>
       <Hero />
-      <DataWrapper>{/* <CateoryCardList /> */}</DataWrapper>
+      <DataWrapper>
+        <CateoryCardList />
+      </DataWrapper>
     </VStack>
   );
 };

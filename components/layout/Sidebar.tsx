@@ -56,8 +56,8 @@ const Sidebar = () => {
       <Text color={"whiteText"} fontSize="24px" textAlign={"left"}>
         Categories
       </Text>
-      {categories.map((category: any) => (
-        <CategoryButton key={category.name} category={category} />
+      {categories.map((category: any, idx: number) => (
+        <CategoryButton key={idx} category={category} />
       ))}
     </VStack>
   );
