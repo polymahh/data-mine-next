@@ -81,7 +81,7 @@ export function DataProvider({ children, results }: Props) {
   const handleDataSources = () => {
     if (dataSources === null) {
       setDataSources(results);
-      console.log(dataSources);
+      console.log(results);
     } else console.log("data is here ", results);
   };
 

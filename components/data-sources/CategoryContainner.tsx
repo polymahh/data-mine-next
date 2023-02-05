@@ -13,9 +13,9 @@ const CategoryContainner = ({ category }: any) => {
         wrap={"wrap"}
         justify={["center", "center", "left"]}
       >
-        {category.items.map((item: any) => (
+        {category.items.map((item: any, idx: number) => (
           <DataCard
-            key={item.Name.title[0].plain_text}
+            key={idx}
             name={item.Name.title[0].plain_text}
             status={item.Status_.select}
             isDynamic={item["Dynamic Data"].relation[0]?.id !== undefined}

@@ -22,9 +22,9 @@ const SimilarDataSources = () => {
         justify={["center", "center", "left"]}
       >
         {similarDataSources &&
-          similarDataSources.items.map((item: any) => (
+          similarDataSources.items.map((item: any, idx: number) => (
             <DataCard
-              key={item.Name.title[0].plain_text}
+              key={idx}
               name={item.Name.title[0].plain_text}
               status={item.Status_.select}
               isDynamic={item["Dynamic Data"].relation[0]?.id !== undefined}

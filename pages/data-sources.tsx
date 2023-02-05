@@ -8,11 +8,24 @@ import { useContext, useEffect } from "react";
 export { getStaticProps } from "../context/DataContext";
 
 const DataSources = () => {
-  const { handleDataSources, results } = useContext(DataContext);
+  const {
+    handleDataSources,
+    handleCategories,
+    selectedCategory,
+    searchVal,
+    sortby,
+    filter,
+    dataSources,
+  } = useContext(DataContext);
 
   useEffect(() => {
     handleDataSources();
-  }, []);
+  });
+
+  useEffect(() => {
+    console.log(dataSources);
+    handleCategories();
+  }, [dataSources, selectedCategory, searchVal, sortby, filter]);
   return (
     <VStack minH={"100vh"} bg={"bgLight"} spacing={0}>
       <Hero />

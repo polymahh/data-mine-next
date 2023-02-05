@@ -1,3 +1,5 @@
+"use client";
+
 import { StatusBadge } from "../layout/StatusBadge";
 import { Avatar, Box, Icon, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -13,23 +15,24 @@ interface Props {
 const DataCard = ({ name, status, isDynamic }: Props) => {
   const [icon, setIcon] = useState(null);
   const router = useRouter();
-
   useEffect(() => {
     const load = async () => {
       try {
         const responce = await import(
-          `../../../assets/icons/${name
+          `../assets/icons/${name
             .toLowerCase()
             .trim()
             .replace(/ /g, "-")}_icon.png`
         );
-        setIcon(responce.default);
+        setIcon(responce.default.src);
+        // console.log(responce.default.src);
       } catch (err) {
         setIcon(null);
       }
     };
     load();
   }, [name]);
+
   return (
     <VStack
       spacing={8}
