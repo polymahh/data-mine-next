@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { useContext, useState, useEffect } from "react";
-import DataContext from "@/context/DataContext";
+import DataContext, { getStaticProps } from "@/context/DataContext";
 import BreadCrumbs from "@/components/source-page/BreadCrumbs";
 import DataAttributes from "@/components/source-page/DataAttributes";
 import Description from "@/components/source-page/Description";
@@ -9,36 +9,39 @@ import Links from "@/components/source-page/Links";
 import RelatedApps from "@/components/source-page/RelatedApps";
 import SimilarDataSources from "@/components/source-page/SimilarDataSources";
 import { useRouter } from "next/router";
+import { DataSource } from "@/@types/types";
+import { getDataSources } from "@/services/sources-service";
+
+export { getStaticPaths } from "@/context/DataContext";
+export { getStaticProps } from "@/context/DataContext";
 
 const SourceData = () => {
   const route = useRouter();
-  const [filtred, setFiltred] = useState<any>(null);
+  const [filtred, setFiltred] = useState<DataSource>();
   const [filtering, setFiltering] = useState(false);
   const { categories, handleDataSources, handleCategories, dataSources } =
     useContext(DataContext);
 
   useEffect(() => {
-    if (dataSources[0] !== null) {
-      const val = dataSources.find((item: any) =>
-        route.asPath.includes(item.name.toLowerCase().trim().replace(/ /g, "-"))
-      );
-      setFiltred(val);
-    }
-  }, [dataSources, route.asPath]);
+    handleDataSources();
+  }, []);
 
   useEffect(() => {
     handleCategories();
-  }, [dataSources]);
+    const val = dataSources.find((item: any) =>
+      route.asPath.includes(item.name.toLowerCase().trim().replace(/ /g, "-"))
+    );
+    setFiltred(val);
+  }, [dataSources, route.asPath]);
+
+  useEffect(() => {}, [dataSources]);
 
   console.log(filtred);
-
-  const name = filtred?.name;
-  const category = filtred?.categories[0];
 
   return categories ? (
     filtred ? (
       <VStack alignItems={"start"} py={8} px={[2, 4, 10, 10, 12, 20]}>
-        <BreadCrumbs name={name} category={category} />
+        <BreadCrumbs name={filtred.name} category={filtred.categories[0]} />
         <Flex
           gap={[2, 2, 6]}
           alignItems={"center"}
@@ -54,7 +57,7 @@ const SourceData = () => {
             color={"whiteText"}
             fontSize={["24px", "36px"]}
           >
-            {name}
+            {filtred.name}
           </Heading>
           <IsDynamic dynamic={filtred.isDynamic} />
         </Flex>
@@ -64,8 +67,8 @@ const SourceData = () => {
           px={{ base: 0, xl: 20 }}
           spacing={20}
         >
-          <Description name={name} description={filtred?.description} />
-          <Links docs={filtred?.documentationUrl} api={filtred?.apiUrl} />
+          <Description name={filtred.name} description={filtred.description} />
+          <Links docs={filtred.documentationUrl} api={filtred.apiUrl} />
 
           <DataAttributes
             sourceID={filtred.notionId}
@@ -95,7 +98,7 @@ const SourceData = () => {
 
           {/* related apps */}
 
-          <RelatedApps relatedApps={filtred?.relatedApps} />
+          <RelatedApps relatedApps={filtred.relatedApps} />
 
           {/* similar data sources */}
           {categories && (
@@ -109,7 +112,7 @@ const SourceData = () => {
                 Similar Data Sources
               </Text>
 
-              <SimilarDataSources category={category} />
+              <SimilarDataSources category={filtred.categories[0]} />
             </>
           )}
         </VStack>

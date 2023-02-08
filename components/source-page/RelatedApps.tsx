@@ -14,7 +14,7 @@ const RelatedApps = ({ relatedApps }: Props) => {
 
   const filtered =
     relatedApps !== "" &&
-    dataSources.filter((item: DataSource) => relatedApps.includes(item.name));
+    dataSources.filter((item: DataSource) => relatedApps === item.relatedApps);
 
   return (
     filtered[0] && (

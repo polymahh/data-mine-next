@@ -4,62 +4,13 @@ import { createContext, useState } from "react";
 import { ReactNode } from "react";
 const { Client } = require("@notionhq/client");
 
-let dataFetched = false;
+let res: DataSource[] = [];
 
-// export async function getStaticProps() {
-//   const notionSecret = process.env.NOTION_SECRET;
-//   const notionDataSourcesId = process.env.NOTION_DATASOURCES_ID;
-//   const notionDataConnectorsId = process.env.NOTION_DATACONNECTORS_ID;
-//   const notionAttributesId = process.env.NOTION_ATTRIBUTES_ID;
-
-//   if (
-//     !notionSecret ||
-//     !notionDataSourcesId ||
-//     !notionDataConnectorsId ||
-//     !notionAttributesId
-//   ) {
-//     throw Error(
-//       "Must define NOTION_SECRET and NOTION_DATASOURCES_ID and NOTION_DATAATTRIBUTES_ID in env"
-//     );
-//   }
-
-//   const notion = new Client({
-//     auth: notionSecret,
-//   });
-
-//   let res = [];
-
-//   let query = await notion.databases.query({
-//     database_id: notionDataSourcesId,
-//   });
-
-//   res = [...query.results];
-
-//   while (query.has_more) {
-//     query = await notion.databases.query({
-//       database_id: notionDataSourcesId,
-//       start_cursor: query.next_cursor,
-//     });
-//     res = [...res, ...query.results].map((item) => item.properties);
-//   }
-
-//   return {
-//     props: {
-//       results: res,
-//     },
-//     revalidate: 86400, // 24h In seconds
-//   };
-// }
 export async function getStaticProps() {
-  let res: DataSource[] = [];
-  // if (!dataFetched) {
-  //   res = await getDataSources();
-  // }
-  res = await getDataSources();
-
-  // if (res.length > 0) {
-  //   dataFetched = true;
-  // }
+  if (!res[0]) {
+    res = await getDataSources();
+  }
+  // res = await getDataSources();
 
   return {
     props: {
@@ -68,6 +19,22 @@ export async function getStaticProps() {
     // revalidate: 86400, // 24h In seconds
   };
 }
+
+export const getStaticPaths = async () => {
+  if (!res[0]) {
+    res = await getDataSources();
+  }
+  let paths = res.map((item) => ({
+    params: {
+      source: item.name.toString().toLowerCase().trim().replace(/ /g, "-"),
+    },
+  }));
+  // console.log(paths);
+  return {
+    paths: paths,
+    fallback: false,
+  };
+};
 
 const initialCategories: Category[] = [
   { name: "Appliances", items: [] },
