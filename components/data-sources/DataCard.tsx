@@ -76,7 +76,7 @@ const DataCard = ({ name, status, isDynamic }: Props) => {
       >
         {name}
       </Text>
-      <StatusBadge status={status ? status.name : "Requested"} />
+      <StatusBadge status={status} />
 
       <DynamicIcon
         display={isDynamic ? "block" : "none"}

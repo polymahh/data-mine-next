@@ -1,3 +1,4 @@
+import { DataSource } from "@/@types/types";
 import { Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import React from "react";
 import DataCard from "./DataCard";
@@ -13,12 +14,12 @@ const CategoryContainner = ({ category }: any) => {
         wrap={"wrap"}
         justify={["center", "center", "left"]}
       >
-        {category.items.map((item: any, idx: number) => (
+        {category.items.map((item: DataSource, idx: number) => (
           <DataCard
             key={idx}
-            name={item.Name.title[0].plain_text}
-            status={item.Status_.select}
-            isDynamic={item["Dynamic Data"].relation[0]?.id !== undefined}
+            name={item.name}
+            status={item.status}
+            isDynamic={item.isDynamic}
           />
         ))}
       </Flex>

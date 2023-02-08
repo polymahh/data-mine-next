@@ -90,6 +90,7 @@ const CategoriesMenu = () => {
                 as={Box}
                 key={idx}
                 bg={"bgItem"}
+                _hover={{ bg: "catHover" }}
                 _focus={{ bg: "bgItem" }}
                 textOverflow={"clip"}
               >

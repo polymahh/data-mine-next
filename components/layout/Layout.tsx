@@ -25,7 +25,6 @@ const Layout = ({ children }: Props) => {
         direction={"column"}
         bg={"bgLight"}
       >
-        <Header />
         {children}
       </Flex>
     </>

@@ -2,6 +2,7 @@ import DataContext from "../../context/DataContext";
 import { useContext } from "react";
 import { Flex, Text, VStack } from "@chakra-ui/react";
 import DataCard from "./DataCard";
+import { DataSource } from "@/@types/types";
 
 const SimilarDataSources = () => {
   const { similarDataSources } = useContext(DataContext) || [];
@@ -22,12 +23,12 @@ const SimilarDataSources = () => {
         justify={["center", "center", "left"]}
       >
         {similarDataSources &&
-          similarDataSources.items.map((item: any, idx: number) => (
+          similarDataSources.items.map((item: DataSource, idx: number) => (
             <DataCard
               key={idx}
-              name={item.Name.title[0].plain_text}
-              status={item.Status_.select}
-              isDynamic={item["Dynamic Data"].relation[0]?.id !== undefined}
+              name={item.name}
+              status={item.status}
+              isDynamic={item.isDynamic}
             />
           ))}
       </Flex>

@@ -1,53 +1,75 @@
+import { Category, DataSource } from "@/@types/types";
+import { getDataSources } from "@/services/sources-service";
 import { createContext, useState } from "react";
 import { ReactNode } from "react";
 const { Client } = require("@notionhq/client");
 
+let dataFetched = false;
+
+// export async function getStaticProps() {
+//   const notionSecret = process.env.NOTION_SECRET;
+//   const notionDataSourcesId = process.env.NOTION_DATASOURCES_ID;
+//   const notionDataConnectorsId = process.env.NOTION_DATACONNECTORS_ID;
+//   const notionAttributesId = process.env.NOTION_ATTRIBUTES_ID;
+
+//   if (
+//     !notionSecret ||
+//     !notionDataSourcesId ||
+//     !notionDataConnectorsId ||
+//     !notionAttributesId
+//   ) {
+//     throw Error(
+//       "Must define NOTION_SECRET and NOTION_DATASOURCES_ID and NOTION_DATAATTRIBUTES_ID in env"
+//     );
+//   }
+
+//   const notion = new Client({
+//     auth: notionSecret,
+//   });
+
+//   let res = [];
+
+//   let query = await notion.databases.query({
+//     database_id: notionDataSourcesId,
+//   });
+
+//   res = [...query.results];
+
+//   while (query.has_more) {
+//     query = await notion.databases.query({
+//       database_id: notionDataSourcesId,
+//       start_cursor: query.next_cursor,
+//     });
+//     res = [...res, ...query.results].map((item) => item.properties);
+//   }
+
+//   return {
+//     props: {
+//       results: res,
+//     },
+//     revalidate: 86400, // 24h In seconds
+//   };
+// }
 export async function getStaticProps() {
-  const notionSecret = process.env.NOTION_SECRET;
-  const notionDataSourcesId = process.env.NOTION_DATASOURCES_ID;
-  const notionDataConnectorsId = process.env.NOTION_DATACONNECTORS_ID;
-  const notionAttributesId = process.env.NOTION_ATTRIBUTES_ID;
+  let res: DataSource[] = [];
+  // if (!dataFetched) {
+  //   res = await getDataSources();
+  // }
+  res = await getDataSources();
 
-  if (
-    !notionSecret ||
-    !notionDataSourcesId ||
-    !notionDataConnectorsId ||
-    !notionAttributesId
-  ) {
-    throw Error(
-      "Must define NOTION_SECRET and NOTION_DATASOURCES_ID and NOTION_DATAATTRIBUTES_ID in env"
-    );
-  }
-
-  const notion = new Client({
-    auth: notionSecret,
-  });
-
-  let res = [];
-
-  let query = await notion.databases.query({
-    database_id: notionDataSourcesId,
-  });
-
-  res = [...query.results];
-
-  while (query.has_more) {
-    query = await notion.databases.query({
-      database_id: notionDataSourcesId,
-      start_cursor: query.next_cursor,
-    });
-    res = [...res, ...query.results].map((item) => item.properties);
-  }
+  // if (res.length > 0) {
+  //   dataFetched = true;
+  // }
 
   return {
     props: {
       results: res,
     },
-    revalidate: 86400, // In seconds
+    // revalidate: 86400, // 24h In seconds
   };
 }
 
-const initialCategories: any[] = [
+const initialCategories: Category[] = [
   { name: "Appliances", items: [] },
   { name: "Blogging", items: [] },
   { name: "Calenders", items: [] },
@@ -66,12 +88,12 @@ const DataContext = createContext<any>({});
 
 interface Props {
   children?: ReactNode;
-  results?: any;
+  results: DataSource[];
   // any props that come into the component
 }
 
 export function DataProvider({ children, results }: Props) {
-  const [dataSources, setDataSources] = useState(null);
+  const [dataSources, setDataSources] = useState<DataSource[]>([]);
   const [categories, setCategories] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState<[string]>(["All"]);
   const [sortby, setSortby] = useState("All");
@@ -79,9 +101,8 @@ export function DataProvider({ children, results }: Props) {
   const [searchVal, setSearchVal] = useState("");
 
   const handleDataSources = () => {
-    if (dataSources === null) {
+    if (!dataSources[0]) {
       setDataSources(results);
-      console.log(results);
     } else console.log("data is here ", results);
   };
 
@@ -103,8 +124,7 @@ export function DataProvider({ children, results }: Props) {
                   name: category.name,
                   items: [
                     ...category.items.filter(
-                      (item: any) =>
-                        item.Status_.select?.name === "Live Available"
+                      (item: any) => item.status === "Live Available"
                     ),
                   ],
                 }
@@ -119,7 +139,7 @@ export function DataProvider({ children, results }: Props) {
                   name: category.name,
                   items: [
                     ...category.items.filter(
-                      (item: any) => item.Status_.select === null
+                      (item: any) => item.status === "Requested"
                     ),
                   ],
                 }
@@ -134,8 +154,8 @@ export function DataProvider({ children, results }: Props) {
                   items: [
                     ...category.items.filter(
                       (item: any) =>
-                        item.Status_.select &&
-                        item.Status_.select?.name !== "Live Available"
+                        item.status !== "Live Available" &&
+                        item.status !== "Requested"
                     ),
                   ],
                 }
@@ -153,9 +173,7 @@ export function DataProvider({ children, results }: Props) {
                   name: category.name,
                   items: [
                     ...category.items.filter((item: any) =>
-                      item.Name.title[0].plain_text
-                        .toLowerCase()
-                        .includes(searchVal)
+                      item.name.toLowerCase().includes(searchVal)
                     ),
                   ],
                 }
@@ -173,10 +191,7 @@ export function DataProvider({ children, results }: Props) {
               ? {
                   name: category.name,
                   items: [
-                    ...category.items.filter(
-                      (item: any) =>
-                        item["Dynamic Data"].relation[0]?.id !== undefined
-                    ),
+                    ...category.items.filter((item: any) => item.isDynamic),
                   ],
                 }
               : category;
@@ -188,20 +203,19 @@ export function DataProvider({ children, results }: Props) {
               ? {
                   name: category.name,
                   items: [
-                    ...category.items.filter(
-                      (item: any) => !item["Dynamic Data"].relation[0]
-                    ),
+                    ...category.items.filter((item: any) => item.isDynamic),
                   ],
                 }
               : category;
           return filtered;
         });
   const handleCategories = () => {
-    if (dataSources && categories == null) {
+    console.log(dataSources);
+    if (dataSources[0] && categories == null) {
       [...dataSources].map((source: any) => {
-        source.Categories.multi_select.map((item: any) =>
+        source.categories.map((item: any) =>
           initialCategories.map((cat) => {
-            if (cat.name == item.name) {
+            if (cat.name == item) {
               cat.items.push(source);
             }
           })
@@ -226,6 +240,7 @@ export function DataProvider({ children, results }: Props) {
     }
   };
   // shows the datasources in the first selected Category
+
   const similarDataSources =
     categories &&
     initialCategories.find(
