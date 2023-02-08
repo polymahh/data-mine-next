@@ -19,7 +19,6 @@ const SourceData = () => {
 
   useEffect(() => {
     if (dataSources[0] !== null) {
-      console.log(route.asPath, dataSources);
       const val = dataSources.find((item: any) =>
         route.asPath.includes(item.name.toLowerCase().trim().replace(/ /g, "-"))
       );

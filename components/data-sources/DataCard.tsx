@@ -25,7 +25,6 @@ const DataCard = ({ name, status, isDynamic }: Props) => {
             .replace(/ /g, "-")}_icon.png`
         );
         setIcon(responce.default.src);
-        // console.log(responce.default.src);
       } catch (err) {
         setIcon(null);
       }

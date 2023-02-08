@@ -18,7 +18,10 @@ const Description = ({ name, description }: Props) => {
     const load = async () => {
       try {
         const responce = await import(
-          `../assets/icons/${router.pathname}_icon.png`
+          `../assets/icons/${name
+            .toLowerCase()
+            .trim()
+            .replace(/ /g, "-")}_icon.png`
         );
         setIcon(responce.default.src);
       } catch (err) {
