@@ -9,7 +9,7 @@ function CategoryTag({ name }: Props) {
   const [color, setColor] = useState("");
   const [bgColor, setBgColor] = useState("");
   const [borderColor, setBorderColor] = useState("");
-  const setTag = () => {
+  useEffect(() => {
     if (name === "Sleep") {
       setColor("#B593FF");
       setBorderColor("#B593FF");
@@ -90,12 +90,7 @@ function CategoryTag({ name }: Props) {
       setBorderColor("#FFE193");
       setBgColor("#FFFFFF00");
     }
-  };
-
-  useEffect(()=>{
-  setTag();
-
-  },[])
+  }, [name]);
   return (
     <Text
       textAlign={"center"}

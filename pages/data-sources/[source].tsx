@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { useContext, useState, useEffect } from "react";
-import DataContext, { getStaticProps } from "@/context/DataContext";
+import DataContext from "@/context/DataContext";
 import BreadCrumbs from "@/components/source-page/BreadCrumbs";
 import DataAttributes from "@/components/source-page/DataAttributes";
 import Description from "@/components/source-page/Description";
@@ -19,8 +19,7 @@ const SourceData = () => {
   const route = useRouter();
   const [filtred, setFiltred] = useState<DataSource>();
   const [filtering, setFiltering] = useState(false);
-  const { categories, handleDataSources, handleCategories, dataSources } =
-    useContext(DataContext);
+  const { categories, handleDataSources, handleCategories, dataSources } = useContext(DataContext);
 
   useEffect(() => {
     handleDataSources();
@@ -28,15 +27,16 @@ const SourceData = () => {
 
   useEffect(() => {
     handleCategories();
-    const val = dataSources.find((item: any) =>
-      route.asPath.includes(item.name.toLowerCase().trim().replace(/ /g, "-"))
+    
+    const val = dataSources.find((item: any) =>{
+      console.log(route.asPath,item.name.toLowerCase().trim().replace(/ /g, "-"))
+      return route.asPath.includes(item.name.toLowerCase().trim().replace(/ /g, "-"))
+    }
     );
     setFiltred(val);
   }, [dataSources, route.asPath]);
 
-  useEffect(() => {}, [dataSources]);
-
-  console.log(filtred);
+  console.log("filtred",filtred);
 
   return categories ? (
     filtred ? (
@@ -52,28 +52,16 @@ const SourceData = () => {
           flexWrap={"wrap"}
           direction={["column", "column", "row"]}
         >
-          <Heading
-            textAlign={"center"}
-            color={"whiteText"}
-            fontSize={["24px", "36px"]}
-          >
+          <Heading textAlign={"center"} color={"whiteText"} fontSize={["24px", "36px"]}>
             {filtred.name}
           </Heading>
           <IsDynamic dynamic={filtred.isDynamic} />
         </Flex>
-        <VStack
-          alignItems={"start"}
-          width={"full"}
-          px={{ base: 0, xl: 20 }}
-          spacing={20}
-        >
+        <VStack alignItems={"start"} width={"full"} px={{ base: 0, xl: 20 }} spacing={20}>
           <Description name={filtred.name} description={filtred.description} />
           <Links docs={filtred.documentationUrl} api={filtred.apiUrl} />
 
-          <DataAttributes
-            sourceID={filtred.notionId}
-            filtred={filtred && filtred}
-          />
+          <DataAttributes sourceID={filtred.notionId} filtred={filtred && filtred} />
 
           <Flex
             gap={2}
@@ -103,12 +91,7 @@ const SourceData = () => {
           {/* similar data sources */}
           {categories && (
             <>
-              <Text
-                color={"whiteText"}
-                textAlign={"left"}
-                width={"full"}
-                fontSize={"24px"}
-              >
+              <Text color={"whiteText"} textAlign={"left"} width={"full"} fontSize={"24px"}>
                 Similar Data Sources
               </Text>
 

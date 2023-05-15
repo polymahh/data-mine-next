@@ -1,40 +1,52 @@
-import { Category, DataSource } from "@/@types/types";
+import { Attribute, Category, DataSource } from "@/@types/types";
+import { getAttributes } from "@/services/getAttributes";
 import { getDataSources } from "@/services/sources-service";
 import { createContext, useState } from "react";
 import { ReactNode } from "react";
-const { Client } = require("@notionhq/client");
+// const { Client } = require("@notionhq/client");
 
 let res: DataSource[] = [];
 
-export async function getStaticProps() {
+export const getStaticPaths = async () => {
+  console.log("getStaticPaths")
   if (!res[0]) {
     res = await getDataSources();
+    console.log(res.length)
+  }
+  let idPaths = res.map((item) => ({
+    params: {
+      source: item.name.toString().toLowerCase().trim().replace(/ /g, "-"),
+    },
+  }));
+  console.log("these paths",idPaths);
+  return {
+    paths: idPaths,
+    fallback: false,
+  };
+};
+
+export async function getStaticProps({ params }: { params: { source: string} }) {//{ params =""}: any
+  console.log("getStaticProps pp",params);
+  let atts: Attribute[] = [];
+  if (!res[0]) {
+    res = await getDataSources();
+  }
+  if (params?.source){
+    let id = res?.find(item => item.name.toString().toLowerCase().trim().replace(/ /g, "-") == params.source)?.notionId || ""
+    console.log("source id" , id)
+    atts = await getAttributes(id);//params.id
+    console.log("att all", atts.length);
   }
   // res = await getDataSources();
 
   return {
     props: {
       results: res,
+      attributes: atts,
     },
     // revalidate: 86400, // 24h In seconds
   };
 }
-
-export const getStaticPaths = async () => {
-  if (!res[0]) {
-    res = await getDataSources();
-  }
-  let paths = res.map((item) => ({
-    params: {
-      source: item.name.toString().toLowerCase().trim().replace(/ /g, "-"),
-    },
-  }));
-  // console.log(paths);
-  return {
-    paths: paths,
-    fallback: false,
-  };
-};
 
 const initialCategories: Category[] = [
   { name: "Appliances", items: [] },
@@ -56,10 +68,11 @@ const DataContext = createContext<any>({});
 interface Props {
   children?: ReactNode;
   results: DataSource[];
+  attributes: Attribute[];
   // any props that come into the component
 }
 
-export function DataProvider({ children, results }: Props) {
+export function DataProvider({ children, results, attributes }: Props) {
   const [dataSources, setDataSources] = useState<DataSource[]>([]);
   const [categories, setCategories] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState<[string]>(["All"]);
@@ -230,6 +243,7 @@ export function DataProvider({ children, results }: Props) {
         similarDataSources,
         filter,
         setFilter,
+        attributes
       }}
     >
       {children}

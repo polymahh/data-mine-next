@@ -16,6 +16,7 @@ interface Props {
 }
 
 const TableRow = ({ attribute }: Props) => {
+  console.log(attribute)
   return (
     <>
       <Text
@@ -24,7 +25,7 @@ const TableRow = ({ attribute }: Props) => {
         borderBottom={"1px"}
         borderColor={"tableBorder"}
       >
-        {attribute.properties["Attribute Name"].title[0].plain_text}
+        {attribute.attributeName}
       </Text>
       <Text
         p={4}
@@ -32,7 +33,7 @@ const TableRow = ({ attribute }: Props) => {
         borderBottom={"1px"}
         borderColor={"tableBorder"}
       >
-        {attribute.properties["Attribute Name"].title[0].plain_text}
+        {attribute.attributeName}
       </Text>
       <Text
         p={4}
@@ -40,9 +41,7 @@ const TableRow = ({ attribute }: Props) => {
         borderBottom={"1px"}
         borderColor={"tableBorder"}
       >
-        {attribute.properties["Attribute description"]?.rich_text.map(
-          (text: any, idx: number) => <Text key={idx}>{text.plain_text}</Text>
-        ) || ""}
+        {attribute.attributeDescription || ""}
       </Text>
       <Flex
         display={{ base: "none", lg: "flex" }}
@@ -60,10 +59,10 @@ const TableRow = ({ attribute }: Props) => {
           <AccordionItem borderColor={"tableBorder"}>
             <AccordionButton fontSize={"12px"}>
               <Box flex="1" textAlign="left">
-                {attribute.properties["Attribute Name"].title[0].plain_text}
+                {attribute.attributeName}
               </Box>
               <Box flex="1" textAlign="left">
-                {attribute.properties["Attribute Name"].title[0].plain_text}
+                {attribute.attributeName}
               </Box>
               <AccordionIcon />
             </AccordionButton>
@@ -72,11 +71,7 @@ const TableRow = ({ attribute }: Props) => {
                 Attribute Description
               </Text>
               <Text pb={4}>
-                {attribute.properties["Attribute description"]?.rich_text.map(
-                  (text: any, idx: number) => (
-                    <Text key={idx}>{text.plain_text}</Text>
-                  )
-                ) || ""}
+                {attribute.attributeDescription || ""}
               </Text>
               <Flex justify={"space-between"}>
                 <Text color={"#FFFFFF80"}>Data Category</Text>

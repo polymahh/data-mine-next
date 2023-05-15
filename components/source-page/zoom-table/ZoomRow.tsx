@@ -1,3 +1,5 @@
+import { Attribute } from "@/@types/types";
+
 import {
   Accordion,
   AccordionButton,
@@ -36,7 +38,7 @@ const ZoomRow = ({ attribute }: Props) => {
           letterSpacing={"1px"}
           opacity={"70%"}
         >
-          {attribute.objectName}
+          {attribute.attributeName}
         </Text>
       </Flex>
       <GridItem
@@ -44,7 +46,7 @@ const ZoomRow = ({ attribute }: Props) => {
         borderBottom={"1px"}
         borderColor={"tableBorder"}
       >
-        {attribute.att.map((obj: any, idx: number) => (
+        {attribute.att.map((obj: Attribute, idx: number) => (
           <Grid
             key={idx}
             gridTemplateColumns={{
@@ -57,10 +59,10 @@ const ZoomRow = ({ attribute }: Props) => {
             opacity={"70%"}
           >
             <Text p={4} display={{ base: "none", lg: "block" }}>
-              {obj.properties["Attribute Name"].title[0]["plain_text"]}
+              {obj.attributeName}
             </Text>
             <Text p={4} display={{ base: "none", lg: "block" }}>
-              {obj.properties["Attribute Name"].title[0]["plain_text"]}
+              {obj.attributeName}
             </Text>
             <Text p={4} display={{ base: "none", lg: "block" }}>
               obj.Aggregate
@@ -71,7 +73,7 @@ const ZoomRow = ({ attribute }: Props) => {
                 <AccordionItem borderColor={"bgDark"}>
                   <AccordionButton fontSize={"12px"}>
                     <Box flex="1" textAlign="left">
-                      {obj.properties["Attribute Name"].title[0]["plain_text"]}
+                      {obj.attributeName}
                     </Box>
 
                     <AccordionIcon />
@@ -87,9 +89,7 @@ const ZoomRow = ({ attribute }: Props) => {
                       </Text>
                       <Text pb={4}>
                         {
-                          obj.properties["Attribute Name"].title[0][
-                            "plain_text"
-                          ]
+                          obj.attributeName
                         }
                       </Text>
                     </Flex>

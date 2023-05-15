@@ -29,8 +29,9 @@ export const AttributesTable = ({ attributes }: Props) => {
     const arr = attributes.slice(0, rows);
     setAttributesRange(arr);
   }, [attributes]);
-
+  console.log(attributes)
   return (
+    
     <Grid
       gridTemplateColumns={{
         base: "1fr 1fr",

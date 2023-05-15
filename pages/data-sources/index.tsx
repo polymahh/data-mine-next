@@ -6,6 +6,7 @@ import DataContext from "@/context/DataContext";
 import { Box, VStack } from "@chakra-ui/react";
 import { useContext, useEffect } from "react";
 
+// export { getStaticPaths } from "@/context/DataContext";
 export { getStaticProps } from "@/context/DataContext";
 
 const DataSources = () => {

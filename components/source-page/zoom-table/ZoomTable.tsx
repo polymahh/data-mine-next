@@ -17,17 +17,17 @@ export const ZoomTable = ({ attributes, filtred }: Props) => {
   const [endRange, setEndRange] = useState(rows);
   const [attributesRange, setAttributesRange] = useState<any[]>([]);
 
-  const zoomAttributes = filtred.dataObjectsNames.formula.string
+  const zoomAttributes = filtred.dataObjectsNames
     .split(",")
     .map((item: string, idx: number) => {
       if (item !== "") {
         return {
           objectName: item,
-          Objectid: filtred["Data Objects (All)"].relation[idx]?.id,
+          Objectid: filtred.dataObjects[idx]?.id,
           att: attributes.filter((item: any) =>
-            item.properties["Object(s) using this"].relation.find(
+            item.ObjectsUsingThis.find(
               (obj: any) =>
-                obj.id === filtred["Data Objects (All)"].relation[idx].id
+                obj.id === filtred.dataObjects[idx]?.id
             )
           ),
         };

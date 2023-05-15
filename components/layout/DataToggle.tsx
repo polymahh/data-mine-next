@@ -1,19 +1,15 @@
-import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Box, Tab, TabIndicator, TabList, Tabs } from "@chakra-ui/react";
 // import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
 const DataToggle = () => {
-  // let navigate = useNavigate();
-  // const location = useLocation();
-
-  // const tabIndex = location.pathname.includes("/data-connectors") ? 1 : 0;
 
   const router = useRouter();
-  const tabIndex = useRef(0);
+  const tabIndex = useRef(router.pathname.includes("/data-connectors") ? 1 : 0);
   useEffect(() => {
     tabIndex.current = router.pathname.includes("/data-connectors") ? 1 : 0;
-  }, [router]);
+  }, [router.pathname]);
 
   return (
     <Box width={"full"}>
@@ -27,14 +23,13 @@ const DataToggle = () => {
         }}
       >
         <TabList
-        // maxW={"container.xl"} mx={"auto"}
         >
           <Tab
             px={10}
             noOfLines={2}
             fontSize={["xs", "sm", "lg"]}
             fontWeight={600}
-            _selected={{ borderBottom: "2px solid #6AD9C1" }}
+            // _selected={{ borderBottom: "2px solid #6AD9C1" }}
             _hover={{ backgroundColor: "bgDark" }}
             onClick={() => router.push("/data-sources")}
           >
@@ -45,13 +40,19 @@ const DataToggle = () => {
             px={8}
             fontSize={["xs", "sm", "lg"]}
             fontWeight={600}
-            _selected={{ borderBottom: "2px solid #6AD9C1" }}
+            // _selected={{ borderBottom: "2px solid #6AD9C1" }}
             _hover={{ backgroundColor: "bgDark" }}
             onClick={() => router.push("/data-connectors")}
           >
             DATA CONNECTORS
           </Tab>
         </TabList>
+        <TabIndicator
+          mt="-2px"
+          height="2px"
+          bg="#6AD9C1"
+          // borderRadius="1px"
+        />
       </Tabs>
     </Box>
   );

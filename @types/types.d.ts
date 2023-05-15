@@ -1,5 +1,5 @@
 export type DataSource = {
-    notionId:string,
+        notionId:string,
         name:string,
         categories:string[],
         isDynamic:boolean,
@@ -7,10 +7,19 @@ export type DataSource = {
         description:string,
         documentationUrl:string,
         apiUrl:string,
-        relatedApps:string
+        relatedApps:string,
+        dataObjectsNames:string,
+        dataObjects:[{id:string}],
+
 }
 
 export type Category = {
     name:string,
     items:DataSource[],
+}
+export type Attribute = {
+    attributeName:string,
+    attributeDescription:string,
+    ObjectsUsingThis:[{id:string}],
+
 }

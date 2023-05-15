@@ -1,10 +1,11 @@
 import { Center, Flex, HStack, Skeleton, Text, VStack } from "@chakra-ui/react";
 // import { fetchData } from "../../../utils/fetcher";
 import { AttributesTable } from "./data-table/AttributesTable";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import AttributesMenu from "./AttributesMenu";
 import { ZoomTable } from "./zoom-table/ZoomTable";
 import LoadingAttributes from "./LoadingAttributes";
+import DataContext from "@/context/DataContext";
 
 interface Props {
   sourceID: string;
@@ -16,33 +17,11 @@ const DataAttributes = ({ sourceID, filtred }: Props) => {
   const [attributes, setAttributes] = useState<any>(null);
   const [zoom, setZoom] = useState<boolean>(false);
 
-  // const getAttributes = async () => {
-  //   const data = await fetchData(`/api/data-sources/${sourceID}`);
-  //   let arr = data.results;
-  //   setAttributes(arr);
-
-  //   if (data.has_more) {
-  //     getNextCursor(data.next_cursor, arr);
-  //   }
-  // };
-
-  // const getNextCursor = async (id: string, prev: any) => {
-  //   const data = await fetchData(`/api/data-sources/${sourceID}/${id}`);
-  //   let arr = [...prev, ...data.results];
-
-  //   setAttributes(arr);
-  //   if (data.has_more) {
-  //     getNextCursor(data.next_cursor, arr);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setAttributes(null);
-  //   if (mounted) {
-  //     mounted.current = false;
-  //     getAttributes();
-  //   } else console.log("data called");
-  // }, [sourceID]);
+  const { attributes: atts } = useContext(DataContext);
+  useEffect(()=>{
+    setAttributes(atts)
+  },[atts.length])
+  console.log("fetched attributes",atts);
 
   return (
     <VStack width={"full"} alignItems={"start"} color={"whiteText"}>
@@ -50,15 +29,13 @@ const DataAttributes = ({ sourceID, filtred }: Props) => {
       <Flex fontSize={"lg"} p={4} pt={0} gap={2}>
         {attributes == null && <Text>Loading Data Attributes ... </Text>}
 
-        {attributes && attributes[0] && (
+        {(attributes && attributes[0]) && (
           <>
             <Text>Data Attributes</Text>
             <Text color={"primary"}>({attributes.length})</Text>
           </>
         )}
-        {attributes && !attributes[0] && (
-          <Text>No Data Attributes Availabale</Text>
-        )}
+        {(attributes && !attributes[0]) && <Text>No Data Attributes Availabale</Text>}
       </Flex>
 
       <Center bg={"bgItem"} px={4} py={2} w={"full"}>
@@ -67,9 +44,7 @@ const DataAttributes = ({ sourceID, filtred }: Props) => {
         {/* attributes table */}
         {attributes && !zoom && <AttributesTable attributes={attributes} />}
         {/* zoom table */}
-        {attributes && zoom && (
-          <ZoomTable attributes={attributes} filtred={filtred} />
-        )}
+        {attributes && zoom && <ZoomTable attributes={attributes} filtred={filtred} />}
       </Center>
     </VStack>
   );

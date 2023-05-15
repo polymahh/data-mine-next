@@ -1,4 +1,5 @@
 const { Client } = require("@notionhq/client");
+import { DataSource } from "@/@types/types";
 
 export const  getDataSources = async ()=>{
 
@@ -38,7 +39,9 @@ export const  getDataSources = async ()=>{
         description:item.Description?.rich_text[0]?.plain_text || "Coming Soon ...",
         documentationUrl:item["Source docs URL"]?.url || "Not Available",
         apiUrl:item["Source docs URL"]?.url || "Not Available",
-        relatedApps:item.relatedApps?.formula.string || ""
+        relatedApps:item.relatedApps?.formula.string || "",
+        dataObjectsNames: item.dataObjectsNames.formula.string || "",
+        dataObjects: item["Data Objects (All)"].relation || [],
     }
   })
 
