@@ -16,7 +16,6 @@ interface Props {
 }
 
 const TableRow = ({ attribute }: Props) => {
-  console.log(attribute)
   return (
     <>
       <Text

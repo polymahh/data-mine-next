@@ -14,7 +14,6 @@ export const  getAttributes = async (id:string)=>{
       });
 
     let res = [];
-    console.log(id)
   let query = await notion.databases.query({
     database_id: notionAttributes,
     
@@ -49,14 +48,14 @@ export const  getAttributes = async (id:string)=>{
     });
     res = [...res, ...query.results];
   }
-  const data = res.map((item) => item.properties).map((item:any)=> {
+  const data = res.length ? res.map((item) => item.properties).map((item:any)=> {
     return {
-        attributeName:item["Attribute Name"].title[0].plain_text || "need title",
+        attributeName:item["Attribute Name"]?.title[0]?.plain_text || "need title",
         attributeDescription:item["Attribute description"]?.rich_text[0]?.plain_text || "Coming Soon ...",
-        ObjectsUsingThis: item["Object(s) using this"].relation || []
+        ObjectsUsingThis: item["Object(s) using this"]?.relation || []
 
     }
-  })
+  }) : []
 
   console.log("get att data",data)
 

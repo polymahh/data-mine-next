@@ -11,9 +11,10 @@ interface Props {
 const tags = ["Sleep", "Health", "Activity"];
 
 const Description = ({ name }: Props) => {
-  const [icon, setIcon] = useState(null);
+  const [icon, setIcon] = useState<any>(null);
 
   useEffect(() => {
+    console.log("sdsdsdsdsdsds")
     const load = async () => {
       try {
         const responce = await import(`../assets/connector-sleep-icon.png`);
@@ -22,7 +23,7 @@ const Description = ({ name }: Props) => {
         setIcon(null);
       }
     };
-    load();
+    // load();
   }, [name]);
 
   return (
@@ -34,7 +35,8 @@ const Description = ({ name }: Props) => {
       direction={{ base: "column", lg: "row" }}
     >
       <Box mr={{ base: 0, lg: 10, xl: 28 }}>
-        <Image alt={name} src={icon || ""} />
+        {/* <Image alt={name} src={icon || ""} /> */}
+        <Image alt={name} src={"../assets/connector-sleep-icon.png"} />
       </Box>
       <VStack
         alignItems={{ base: "center", lg: "start" }}

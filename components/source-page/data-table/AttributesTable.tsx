@@ -22,14 +22,13 @@ export const AttributesTable = ({ attributes }: Props) => {
   }, [rows, startRange]);
 
   useEffect(() => {
-    console.log("called attributes", attributes);
+    // console.log("called attributes", attributes);
 
     setStartRange(1);
     setEndRange(rows);
     const arr = attributes.slice(0, rows);
     setAttributesRange(arr);
   }, [attributes]);
-  console.log(attributes)
   return (
     
     <Grid

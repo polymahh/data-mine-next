@@ -10,7 +10,6 @@ import RelatedApps from "@/components/source-page/RelatedApps";
 import SimilarDataSources from "@/components/source-page/SimilarDataSources";
 import { useRouter } from "next/router";
 import { DataSource } from "@/@types/types";
-import { getDataSources } from "@/services/sources-service";
 
 export { getStaticPaths } from "@/context/DataContext";
 export { getStaticProps } from "@/context/DataContext";
@@ -29,14 +28,13 @@ const SourceData = () => {
     handleCategories();
     
     const val = dataSources.find((item: any) =>{
-      console.log(route.asPath,item.name.toLowerCase().trim().replace(/ /g, "-"))
       return route.asPath.includes(item.name.toLowerCase().trim().replace(/ /g, "-"))
     }
     );
     setFiltred(val);
   }, [dataSources, route.asPath]);
 
-  console.log("filtred",filtred);
+  // console.log("filtred",filtred);
 
   return categories ? (
     filtred ? (

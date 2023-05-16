@@ -21,7 +21,7 @@ const DataAttributes = ({ sourceID, filtred }: Props) => {
   useEffect(()=>{
     setAttributes(atts)
   },[atts.length])
-  console.log("fetched attributes",atts);
+  // console.log("fetched attributes",atts);
 
   return (
     <VStack width={"full"} alignItems={"start"} color={"whiteText"}>

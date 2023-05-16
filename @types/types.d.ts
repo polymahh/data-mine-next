@@ -23,3 +23,19 @@ export type Attribute = {
     ObjectsUsingThis:[{id:string}],
 
 }
+
+export type Connector = {
+    name: strig,
+    text: string,
+    tags: [sting],
+    icons: [string],
+    status: string,
+    
+}
+
+export type ConnectorAtt = {
+    dataCatagory: string,
+    prifinaAttribute: string,
+    attributeDescription:string,
+    usersWithThis: string,
+}

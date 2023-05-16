@@ -64,6 +64,7 @@ import {
             <MenuList bg={"bgItem"} border={"none"} zIndex={200} gap={2}>
               {arr.map((item) => (
                 <MenuItem
+                  key={item}
                   borderRadius={"4px"}
                   m={2}
                   mr={0}

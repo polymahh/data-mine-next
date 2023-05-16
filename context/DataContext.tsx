@@ -190,7 +190,7 @@ export function DataProvider({ children, results, attributes }: Props) {
           return filtered;
         });
   const handleCategories = () => {
-    console.log(dataSources);
+    // console.log(dataSources);
     if (dataSources[0] && categories == null) {
       [...dataSources].map((source: any) => {
         source.categories.map((item: any) =>

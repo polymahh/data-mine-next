@@ -46,7 +46,6 @@ export const ZoomTable = ({ attributes, filtred }: Props) => {
     setEndRange(rows);
     const arr = zoomAttributes.slice(0, rows);
     setAttributesRange(arr);
-    console.log(zoomAttributes);
   }, [attributes]);
 
   return (

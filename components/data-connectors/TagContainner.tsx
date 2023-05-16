@@ -1,6 +1,6 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { ReactNode, useRef, useEffect, useState } from "react";
-import ConnectorTag from "./connectorTag";
+import ConnectorTag from "./ConnectorTag";
 
 interface Props {
   tags?: string[];
