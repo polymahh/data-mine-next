@@ -18,7 +18,8 @@ const SourceData = () => {
   const route = useRouter();
   const [filtred, setFiltred] = useState<DataSource>();
   const [filtering, setFiltering] = useState(false);
-  const { categories, handleDataSources, handleCategories, dataSources } = useContext(DataContext);
+  const { categories, handleDataSources, handleCategories, dataSources } =
+    useContext(DataContext);
 
   useEffect(() => {
     handleDataSources();
@@ -26,11 +27,14 @@ const SourceData = () => {
 
   useEffect(() => {
     handleCategories();
-    
-    const val = dataSources.find((item: any) =>{
-      return route.asPath.includes(item.name.toLowerCase().trim().replace(/ /g, "-"))
-    }
-    );
+
+    console.log("source path", route.asPath);
+
+    const val = dataSources.find((item: any) => {
+      return route.asPath
+        .replace("%E2%84%A2", "™")
+        .includes(item.name.toLowerCase().trim().replace(/ /g, "-"));
+    });
     setFiltred(val);
   }, [dataSources, route.asPath]);
 
@@ -50,16 +54,28 @@ const SourceData = () => {
           flexWrap={"wrap"}
           direction={["column", "column", "row"]}
         >
-          <Heading textAlign={"center"} color={"whiteText"} fontSize={["24px", "36px"]}>
+          <Heading
+            textAlign={"center"}
+            color={"whiteText"}
+            fontSize={["24px", "36px"]}
+          >
             {filtred.name}
           </Heading>
           <IsDynamic dynamic={filtred.isDynamic} />
         </Flex>
-        <VStack alignItems={"start"} width={"full"} px={{ base: 0, xl: 20 }} spacing={20}>
+        <VStack
+          alignItems={"start"}
+          width={"full"}
+          px={{ base: 0, xl: 20 }}
+          spacing={20}
+        >
           <Description name={filtred.name} description={filtred.description} />
           <Links docs={filtred.documentationUrl} api={filtred.apiUrl} />
 
-          <DataAttributes sourceID={filtred.notionId} filtred={filtred && filtred} />
+          <DataAttributes
+            sourceID={filtred.notionId}
+            filtred={filtred && filtred}
+          />
 
           <Flex
             gap={2}
@@ -89,7 +105,12 @@ const SourceData = () => {
           {/* similar data sources */}
           {categories && (
             <>
-              <Text color={"whiteText"} textAlign={"left"} width={"full"} fontSize={"24px"}>
+              <Text
+                color={"whiteText"}
+                textAlign={"left"}
+                width={"full"}
+                fontSize={"24px"}
+              >
                 Similar Data Sources
               </Text>
 
