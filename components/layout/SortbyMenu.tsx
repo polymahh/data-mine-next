@@ -59,7 +59,7 @@ const SortbyMenu = () => {
             bg={item === sortby ? "menuSelect" : "bgItem"}
             color={item === sortby ? "black" : "whiteText"}
             _hover={{ bg: "catHover", color: "whiteText" }}
-            _focus={{ bg: `${item === sortby ? "menuSelect" : "bgItem"}` }}
+            // _focus={{ bg: `${item === sortby ? "menuSelect" : "bgItem"}` }}
             onClick={() => setSortby(item)}
           >
             {item}

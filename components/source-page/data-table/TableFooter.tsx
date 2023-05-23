@@ -68,9 +68,8 @@ function TableFooter({
                 borderRadius={"4px"}
                 m={2}
                 mr={0}
-                // border={item === sortby ? "2px" : "none"}
+                bg={rows === item ? "catHover" : "bgItem"}
                 _hover={{ bg: "catHover" }}
-                _focus={{ bg: "bgItem" }}
                 onClick={() => {
                   setRows(item);
                   setStartRange(1);

@@ -60,8 +60,11 @@ const FilterMenu = () => {
             // border={item === filter ? "2px" : "none"}
             bg={item === filter ? "menuSelect" : "bgItem"}
             color={item === filter ? "black" : "whiteText"}
-            _hover={{ bg: "catHover", color: "whiteText" }}
-            _focus={{ bg: `${item === filter ? "menuSelect" : "bgItem"}` }}
+            _hover={{
+              bg: "catHover",
+              color: "whiteText",
+            }}
+            // _focus={{ bg: `${item === filter ? "menuSelect" : "bgItem"}` }}
             onClick={() => setFilter(item)}
           >
             {item}
