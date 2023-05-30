@@ -26,15 +26,14 @@ export const ZoomTable = ({ attributes, filtred }: Props) => {
           Objectid: filtred.dataObjects[idx]?.id,
           att: attributes.filter((item: any) =>
             item.ObjectsUsingThis.find(
-              (obj: any) =>
-                obj.id === filtred.dataObjects[idx]?.id
+              (obj: any) => obj.id === filtred.dataObjects[idx]?.id
             )
           ),
         };
       }
     });
 
-  console.log(zoomAttributes);
+  // console.log(zoomAttributes);
 
   useEffect(() => {
     const arr = zoomAttributes.slice(startRange - 1, endRange);

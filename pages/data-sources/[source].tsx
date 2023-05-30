@@ -28,7 +28,7 @@ const SourceData = () => {
   useEffect(() => {
     handleCategories();
 
-    console.log("source path", route.asPath);
+    // console.log("source path", route.asPath);
 
     const val = dataSources.find((item: any) => {
       return route.asPath

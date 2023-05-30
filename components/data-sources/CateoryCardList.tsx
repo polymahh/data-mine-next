@@ -10,7 +10,7 @@ const CateoryCardList = () => {
   const { categories } = useContext(DataContext);
 
   useEffect(() => {
-    console.log(categories);
+    // console.log(categories);
   }, [categories]);
 
   return (

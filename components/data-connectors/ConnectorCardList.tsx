@@ -3,7 +3,7 @@ import { ReactNode, useContext } from "react";
 import RequestConnectors from "./RequestConnectors";
 import ConnectorCard from "./ConnectorCard";
 import ConnectorContext from "@/context/ConnectorContext";
-import {Connector} from "@/@types/types"
+import { Connector } from "@/@types/types";
 
 interface Props {
   children?: ReactNode;
@@ -54,12 +54,10 @@ interface Props {
 //   },
 // ];
 
-
 const ConnectorCardList = ({ children }: Props) => {
+  const { connectors } = useContext(ConnectorContext) || [];
 
-const {connectors } = useContext(ConnectorContext)|| []
-
-console.log("connector card list",connectors)
+  // console.log("connector card list",connectors)
 
   return (
     <>
@@ -70,7 +68,7 @@ console.log("connector card list",connectors)
         width={"full"}
         justifyItems={{ base: "center", xl: "left" }}
       >
-        {connectors.map((connector:Connector,idx:number) => (
+        {connectors.map((connector: Connector, idx: number) => (
           <ConnectorCard key={idx} connector={connector} />
         ))}
       </SimpleGrid>

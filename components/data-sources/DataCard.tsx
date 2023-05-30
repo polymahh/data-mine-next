@@ -54,7 +54,7 @@ const DataCard = ({ name, status, isDynamic }: Props) => {
         )
       }
     >
-      <Box bg={"#0cb0bd"} borderRadius={"18px"}>
+      <Box bg={icon ? "transparent" : "#0cb0bd"} borderRadius={"18px"}>
         <Avatar
           name={name}
           src={icon || ""}

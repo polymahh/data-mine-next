@@ -8,34 +8,41 @@ import { ReactNode } from "react";
 let res: DataSource[] = [];
 
 export const getStaticPaths = async () => {
-  console.log("getStaticPaths")
   if (!res[0]) {
     res = await getDataSources();
-    console.log(res.length)
   }
   let idPaths = res.map((item) => ({
     params: {
       source: item.name.toString().toLowerCase().trim().replace(/ /g, "-"),
     },
   }));
-  console.log("these paths",idPaths);
+  // console.log("these paths", idPaths)
   return {
     paths: idPaths,
     fallback: false,
   };
 };
 
-export async function getStaticProps({ params }: { params: { source: string} }) {//{ params =""}: any
-  console.log("getStaticProps pp",params);
+export async function getStaticProps({
+  params,
+}: {
+  params: { source: string };
+}) {
+  //{ params =""}: any
+  // console.log("getStaticProps pp", params);
   let atts: Attribute[] = [];
   if (!res[0]) {
     res = await getDataSources();
   }
-  if (params?.source){
-    let id = res?.find(item => item.name.toString().toLowerCase().trim().replace(/ /g, "-") == params.source)?.notionId || ""
-    console.log("source id" , id)
-    atts = await getAttributes(id);//params.id
-    console.log("att all", atts.length);
+  if (params?.source) {
+    let id =
+      res?.find(
+        (item) =>
+          item.name.toString().toLowerCase().trim().replace(/ /g, "-") ==
+          params.source
+      )?.notionId || "";
+    atts = await getAttributes(id); //params.id
+    // console.log("att all", atts.length);
   }
   // res = await getDataSources();
 
@@ -50,6 +57,7 @@ export async function getStaticProps({ params }: { params: { source: string} }) 
 
 const initialCategories: Category[] = [
   { name: "Appliances", items: [] },
+  { name: "Auto", items: [] },
   { name: "Blogging", items: [] },
   { name: "Calenders", items: [] },
   { name: "Clocks", items: [] },
@@ -60,6 +68,7 @@ const initialCategories: Category[] = [
   { name: "Games", items: [] },
   { name: "Health and Fitness", items: [] },
   { name: "Location and Navigation", items: [] },
+  { name: "Productivity", items: [] },
   { name: "Security", items: [] },
 ];
 
@@ -83,7 +92,7 @@ export function DataProvider({ children, results, attributes }: Props) {
   const handleDataSources = () => {
     if (!dataSources[0]) {
       setDataSources(results);
-    } else console.log("data is here ", results);
+    } else console.log("data is here ");
   };
 
   const sortbyCategories =
@@ -243,7 +252,7 @@ export function DataProvider({ children, results, attributes }: Props) {
         similarDataSources,
         filter,
         setFilter,
-        attributes
+        attributes,
       }}
     >
       {children}

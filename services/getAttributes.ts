@@ -57,7 +57,7 @@ export const  getAttributes = async (id:string)=>{
     }
   }) : []
 
-  console.log("get att data",data)
+  // console.log("get att data",data)
 
   return data
 }
